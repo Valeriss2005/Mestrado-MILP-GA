@@ -1,0 +1,178 @@
+{
+    "_doc": [
+        "Configuração do experimento: 5 instâncias × 3 cenários = 15 execuções.",
+        "As tolerâncias são calibradas por instância (Fase 1: rodar MILP até viável).",
+        "O campo 'tolerances_calibrated' indica se a calibração já foi feita."
+    ],
+
+    "instances": {
+        "I1_SMALL": {
+            "zip_file": "SMALL_V15.zip",
+            "description": "Pequena – base original real (220 func, 60 proj)",
+            "n_func_approx": 220,
+            "n_proj_approx": 60,
+            "generated": true,
+            "tolerances_calibrated": true,
+            "tolerances": {
+                "TOL_PESSOAS_ALOCADAS": 0.05,
+                "TOL_TREINO": 0.02,
+                "TOL_COMPOSICAO": 0.01,
+                "TOL_COBERTURA_PROJETOS": 0.00,
+                "TOL_PAPEIS": 0.00,
+                "TOL_LIM_FUNC_SOC_DIR_GS": 0.00,
+                "TOL_LIM_FUNC_OUTROS": 0.00,
+                "TOL_DIST": 0.00,
+                "TOL_AUTO": 0.00,
+                "TOL_DESC": 0.00,
+                "TOL_SDEM_GLOBAL": 0.00,
+                "TOL_SDEM_LOCAL": 0.00
+            }
+        },
+        "I2_LARGE_05X": {
+            "zip_file": "LARGE_05X_V01.zip",
+            "description": "Homotética 0,5× da LARGE (600 func, 160 proj)",
+            "n_func_approx": 600,
+            "n_proj_approx": 160,
+            "generated": true,
+            "tolerances_calibrated": true,
+            "tolerances": {
+                "TOL_PESSOAS_ALOCADAS": 0.05,
+                "TOL_TREINO": 0.02,
+                "TOL_COMPOSICAO": 0.01,
+                "TOL_COBERTURA_PROJETOS": 0.00,
+                "TOL_PAPEIS": 0.00,
+                "TOL_LIM_FUNC_SOC_DIR_GS": 0.00,
+                "TOL_LIM_FUNC_OUTROS": 0.00,
+                "TOL_DIST": 0.00,
+                "TOL_AUTO": 0.00,
+                "TOL_DESC": 0.00,
+                "TOL_SDEM_GLOBAL": 0.00,
+                "TOL_SDEM_LOCAL": 0.00
+            }
+        },
+        "I3_LARGE": {
+            "zip_file": "LARGE_V31.zip",
+            "description": "Grande – base original real (1200 func, 320 proj)",
+            "n_func_approx": 1200,
+            "n_proj_approx": 320,
+            "generated": true,
+            "tolerances_calibrated": true,
+            "tolerances": {
+                "TOL_PESSOAS_ALOCADAS": 0.05,
+                "TOL_TREINO": 0.02,
+                "TOL_COMPOSICAO": 0.01,
+                "TOL_COBERTURA_PROJETOS": 0.00,
+                "TOL_PAPEIS": 0.00,
+                "TOL_LIM_FUNC_SOC_DIR_GS": 0.00,
+                "TOL_LIM_FUNC_OUTROS": 0.00,
+                "TOL_DIST": 0.00,
+                "TOL_AUTO": 0.00,
+                "TOL_DESC": 0.00,
+                "TOL_SDEM_GLOBAL": 0.00,
+                "TOL_SDEM_LOCAL": 0.00
+            }
+        },
+        "I4_LARGE_15X": {
+            "zip_file": "LARGE_15X_V01.zip",
+            "description": "Homotética 1,5× da LARGE (1800 func, 480 proj)",
+            "n_func_approx": 1800,
+            "n_proj_approx": 480,
+            "generated": true,
+            "tolerances_calibrated": true,
+            "tolerances": {
+                "TOL_PESSOAS_ALOCADAS": 0.05,
+                "TOL_TREINO": 0.02,
+                "TOL_COMPOSICAO": 0.01,
+                "TOL_COBERTURA_PROJETOS": 0.00,
+                "TOL_PAPEIS": 0.00,
+                "TOL_LIM_FUNC_SOC_DIR_GS": 0.00,
+                "TOL_LIM_FUNC_OUTROS": 0.00,
+                "TOL_DIST": 0.00,
+                "TOL_AUTO": 0.00,
+                "TOL_DESC": 0.00,
+                "TOL_SDEM_GLOBAL": 0.00,
+                "TOL_SDEM_LOCAL": 0.00
+            }
+        },
+        "I5_LARGE_25X": {
+            "zip_file": "LARGE_25X_V01.zip",
+            "description": "Homotética 2,5× da LARGE (3000 func, 800 proj)",
+            "n_func_approx": 3000,
+            "n_proj_approx": 800,
+            "generated": true,
+            "tolerances_calibrated": true,
+            "tolerances": {
+                "TOL_PESSOAS_ALOCADAS": 0.05,
+                "TOL_TREINO": 0.02,
+                "TOL_COMPOSICAO": 0.01,
+                "TOL_COBERTURA_PROJETOS": 0.00,
+                "TOL_PAPEIS": 0.00,
+                "TOL_LIM_FUNC_SOC_DIR_GS": 0.00,
+                "TOL_LIM_FUNC_OUTROS": 0.00,
+                "TOL_DIST": 0.00,
+                "TOL_AUTO": 0.00,
+                "TOL_DESC": 0.00,
+                "TOL_SDEM_GLOBAL": 0.00,
+                "TOL_SDEM_LOCAL": 0.00
+            }
+        }
+    },
+
+    "scenarios": {
+        "A_GA_noBE": {
+            "model": "GA",
+            "ativar_bem_estar": false,
+            "description": "GA sem variáveis de bem-estar (baseline)"
+        },
+        "B_GA_BE": {
+            "model": "GA",
+            "ativar_bem_estar": true,
+            "description": "GA com variáveis de bem-estar"
+        },
+        "C_MILP_BE": {
+            "model": "MILP",
+            "ativar_bem_estar": true,
+            "description": "MILP com variáveis de bem-estar"
+        }
+    },
+
+    "metrics_to_collect": [
+        "custo_total_folha",
+        "funcionarios_alocados",
+        "perc_funcionarios_alocados",
+        "total_alocacoes",
+        "projetos_ativos",
+        "upgrades",
+        "perc_upgrades",
+        "viol_distancia",
+        "viol_autoexclusao",
+        "viol_descompressao",
+        "viol_treino",
+        "viol_hard_total",
+        "fitness_final",
+        "tempo_execucao_s",
+        "status_solver",
+        "gap_otimalidade"
+    ],
+
+    "statistical_tests": {
+        "RQ1_BE_impact": {
+            "description": "Impacto do BE no custo: GA-semBE vs GA-comBE",
+            "test": "Wilcoxon signed-rank (n=5, paired)",
+            "compare": ["A_GA_noBE", "B_GA_BE"],
+            "metric": "custo_total_folha"
+        },
+        "RQ2_method_quality": {
+            "description": "Qualidade: MILP-comBE vs GA-comBE",
+            "test": "Wilcoxon signed-rank (n=5, paired)",
+            "compare": ["C_MILP_BE", "B_GA_BE"],
+            "metric": "custo_total_folha"
+        },
+        "RQ2_method_speed": {
+            "description": "Velocidade: MILP-comBE vs GA-comBE",
+            "test": "Wilcoxon signed-rank (n=5, paired)",
+            "compare": ["C_MILP_BE", "B_GA_BE"],
+            "metric": "tempo_execucao_s"
+        }
+    }
+}
