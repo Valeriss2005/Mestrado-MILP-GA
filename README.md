@@ -47,6 +47,7 @@ Pasta dedicada à geração e documentação das duas instâncias-base do estudo
 - `LARGE_V31` = **I3**
 
 Aqui ficam os scripts, parâmetros e arquivos de apoio para compreender como essas duas bases sintéticas foram estruturadas.
+Essas foram as bases inicialmente usadas até quando houve necessidade de testar em bases maiores para avaliar a performance.
 
 ---
 
