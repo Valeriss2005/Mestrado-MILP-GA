@@ -1,11 +1,13 @@
 # Otimização MILP-GA
 
-Esta pasta reúne os códigos de otimização, análise e consolidação de resultados usados na dissertação para resolver o problema de designação de profissionais em projetos de auditoria externa por duas abordagens:
+Esta pasta reúne os códigos de otimização, consolidação de métricas e análise de resultados usados na dissertação para resolver o problema de designação de profissionais em projetos de auditoria externa.
+
+As abordagens consideradas no projeto são:
 
 - **MILP** (*Mixed-Integer Linear Programming*)
 - **GA** (*Genetic Algorithm*)
 
-Além da execução dos modelos, esta pasta também concentra os scripts responsáveis por gerar **métricas, tabelas, consolidações e gráficos** utilizados na análise experimental da dissertação.
+Além dos modelos, esta pasta contém os scripts responsáveis por executar o experimento formal, completar os cenários necessários e gerar os arquivos analíticos usados na dissertação.
 
 ---
 
@@ -14,7 +16,7 @@ Além da execução dos modelos, esta pasta também concentra os scripts respons
 ```text
 otimiza-milp-ga/
 ├── README.md
-├── configs/
+├── requirements.txt
 ├── data/
 │   ├── instances/
 │   └── results/
@@ -22,15 +24,17 @@ otimiza-milp-ga/
 │   ├── ga_model.py
 │   └── milp_model.py
 ├── scripts/
+│   ├── _calibrate_all.py
+│   ├── run_all.py
+│   ├── run_milp_noBE.py
 │   ├── analyze_experiment.py
 │   ├── analyze_results.py
 │   ├── analyze_multiseed.py
 │   ├── analyze_large.py
 │   └── analyze_small.py
+├── run_multiseed.py
 └── ...
 ```
-
-> A estrutura exata pode variar conforme a versão do projeto, mas a lógica permanece a mesma: **rodar os modelos primeiro** e **executar as análises depois**.
 
 ---
 
@@ -38,11 +42,12 @@ otimiza-milp-ga/
 
 Esta pasta permite:
 
-- executar o **MILP** sobre uma instância sintética;
-- executar o **GA** sobre uma instância sintética;
-- salvar os resultados brutos do processamento;
-- gerar métricas consolidadas do experimento;
-- produzir tabelas, comparações e gráficos usados na dissertação.
+- executar a calibração necessária do MILP;
+- rodar o pipeline principal do experimento;
+- completar o cenário de **MILP sem bem-estar**;
+- executar rodadas multiseed;
+- gerar métricas consolidadas;
+- produzir tabelas, comparações e análises usadas na dissertação.
 
 ---
 
@@ -50,140 +55,186 @@ Esta pasta permite:
 
 Certifique-se de que:
 
-1. as instâncias já foram geradas ou copiadas para a pasta de dados;
-2. as dependências do projeto estão instaladas;
+1. as instâncias já estão disponíveis em `data/instances/`;
+2. as dependências foram instaladas com `requirements.txt`;
 3. os caminhos dos arquivos estão corretos no seu ambiente.
 
-As instâncias-base e os scripts de geração estão nas outras pastas do repositório:
+Se você ainda não gerou as bases, use antes as outras pastas do repositório:
 
 - `gera-instancia-I1-I3`
 - `gera-instancias-I2-I4-I5`
 
-Se você **já tem as bases prontas**, pode começar diretamente por esta pasta.
+---
+
+## Instalação do ambiente
+
+### Windows
+
+```bash
+cd otimiza-milp-ga
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Linux / macOS
+
+```bash
+cd otimiza-milp-ga
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 ---
 
-## Fluxo recomendado
+## Sequência correta de execução
 
-### 1. Coloque as instâncias na pasta de entrada
-Use as bases sintéticas já disponíveis no repositório ou gere novas instâncias nas pastas apropriadas.
+A sequência correta para reproduzir o experimento da dissertação é esta:
 
-### 2. Execute os modelos
-Rode o modelo desejado:
+### 1. Calibração
+```bash
+python scripts\_calibrate_all.py
+```
 
-- **MILP**
-- **GA**
-
-Nesta etapa, o objetivo é gerar os resultados brutos do experimento.
-
-### 3. Gere as análises e métricas
-Com os resultados já produzidos, rode os scripts da pasta `scripts/` para gerar:
-
-- métricas consolidadas;
-- tabelas comparativas;
-- análises por instância;
-- comparações entre seeds;
-- gráficos e artefatos analíticos.
+Use este passo **apenas uma vez**, ou sempre que você tiver **gerado novas bases** e precisar recalibrar os parâmetros usados pelo MILP.
 
 ---
 
-## Execução dos modelos
-
-### Rodar o MILP
-Exemplo genérico:
-
+### 2. Execução principal do experimento
 ```bash
-python models/milp_model.py
+python scripts\run_all.py
 ```
 
-### Rodar o GA
-Exemplo genérico:
+Este passo executa o pipeline principal e **atualiza**:
 
-```bash
-python models/ga_model.py
+```text
+data/results/experiment_metrics.csv
 ```
-
-> Dependendo da organização atual da pasta, os arquivos podem estar em subdiretórios diferentes. Ajuste o caminho conforme necessário.
 
 ---
 
-## Geração das análises e métricas
-
-Após o processamento, utilize os scripts da pasta `scripts/` para gerar os artefatos analíticos.
-
-### 1. Análise geral do experimento
-
+### 3. Execução complementar do MILP sem bem-estar
 ```bash
-python scripts/analyze_experiment.py --input data/results/experiment_metrics.csv
+python scripts\run_milp_noBE.py
 ```
 
-Esse script usa como entrada um arquivo de métricas do experimento e gera análises consolidadas.
+Este passo **completa** o `run_all.py`, adicionando os resultados do cenário de **MILP sem bem-estar**.
 
 ---
 
-### 2. Geração de tabelas e saídas analíticas
-
+### 4. Execução multiseed
 ```bash
-python scripts/analyze_results.py --input data/results/experiment_metrics.csv --output data/results/
+python run_multiseed.py
 ```
 
-Esse script permite gerar saídas consolidadas a partir do arquivo de métricas, com diretório de saída configurável.
+Este passo **atualiza**:
+
+```text
+data/results/experiment_metrics_multiseed.csv
+```
 
 ---
 
-### 3. Comparação multiseed
-
+### 5. Análise final do experimento
 ```bash
-python scripts/analyze_multiseed.py --original data/results/experiment_metrics.csv --multiseed data/results/experiment_metrics_multiseed.csv --milp-nobe data/results/experiment_metrics_milp_noBE.csv
+python analyze_experiment.py
 ```
 
-Esse script foi preparado para comparar:
-
-- o arquivo original de métricas;
-- o arquivo de métricas com múltiplas seeds;
-- e o arquivo de métricas do MILP sem bem-estar.
+Este passo consolida as análises finais a partir dos arquivos de métricas gerados nas etapas anteriores.
 
 ---
 
-### 4. Análises específicas por porte ou grupo
+## O que cada etapa produz
 
-Se necessário, utilize também:
+### `python scripts\_calibrate_all.py`
+Produz ou atualiza os resultados de calibração usados pelo MILP.
 
-```bash
-python scripts/analyze_large.py
-python scripts/analyze_small.py
+### `python scripts\run_all.py`
+Produz ou atualiza:
+
+```text
+data/results/experiment_metrics.csv
 ```
 
-Esses scripts podem ser usados para análises específicas por conjunto de instâncias ou por recorte experimental.
+### `python scripts\run_milp_noBE.py`
+Complementa o conjunto principal de métricas com o cenário de MILP sem bem-estar.
+
+### `python run_multiseed.py`
+Produz ou atualiza:
+
+```text
+data/results/experiment_metrics_multiseed.csv
+```
+
+### `python analyze_experiment.py`
+Gera a análise consolidada a partir dos arquivos de métricas.
+
+---
+
+## Fluxo mínimo recomendado
+
+Se você quer reproduzir o pipeline completo, rode nesta ordem:
+
+```bash
+python scripts\_calibrate_all.py
+python scripts\run_all.py
+python scripts\run_milp_noBE.py
+python run_multiseed.py
+python analyze_experiment.py
+```
+
+---
+
+## Quando recalibrar
+
+Você só precisa rodar novamente:
+
+```bash
+python scripts\_calibrate_all.py
+```
+
+quando:
+- gerar novas instâncias;
+- alterar as bases;
+- ou modificar a lógica que afeta os parâmetros calibrados do MILP.
+
+Se nada disso mudou, não é necessário recalibrar antes de cada execução.
 
 ---
 
 ## Onde os resultados são salvos
 
-Os arquivos gerados pelos scripts de análise tendem a ser gravados em:
+Os principais arquivos de saída ficam em:
 
-- `data/results/`
-- `data/results/analysis/`
-- ou em subpastas específicas de cada instância
+```text
+data/results/
+```
 
-Procure por arquivos como:
+Entre eles:
 
-- `.csv`
-- `.xlsx`
-- `.png`
-- `.pdf`
+- `experiment_metrics.csv`
+- `experiment_metrics_multiseed.csv`
+
+Dependendo da etapa executada, outros arquivos analíticos também podem ser gerados nessa mesma estrutura.
 
 ---
 
-## Quando usar esta pasta
+## Execução manual dos modelos
 
-Use `otimiza-milp-ga` quando você quiser:
+Se necessário, você também pode rodar os modelos isoladamente.
 
-- rodar os modelos diretamente;
-- reproduzir os experimentos;
-- gerar os resultados brutos;
-- calcular métricas;
-- produzir tabelas e gráficos da dissertação.
+### Rodar o MILP
+```bash
+python models/milp_model.py
+```
+
+### Rodar o GA
+```bash
+python models/ga_model.py
+```
+
+Use esse caminho quando quiser testar ou depurar um modelo específico fora do pipeline principal.
 
 ---
 
@@ -195,27 +246,16 @@ A relação com as demais pastas é:
 
 - `gera-instancia-I1-I3` → gera e documenta as instâncias-base;
 - `gera-instancias-I2-I4-I5` → escala a base `LARGE_V31`;
-- `otimiza-milp-ga` → executa os modelos, consolida métricas e produz os artefatos analíticos do experimento.
-
----
-
-## Sequência recomendada
-
-Se você quer reproduzir o pipeline completo, siga esta ordem:
-
-1. gerar ou obter as instâncias;
-2. executar o MILP e/ou o GA;
-3. executar os scripts de análise e métricas.
-
-Se você já possui as bases prontas, comece diretamente pelo passo 2.
+- `otimiza-milp-ga` → executa o experimento, consolida métricas e produz os artefatos analíticos.
 
 ---
 
 ## Observação final
 
-Este README concentra, em um único lugar, o fluxo principal da pasta de otimização:
+Se o objetivo é reproduzir a dissertação, esta é a ordem correta dentro desta pasta:
 
-- executar os modelos;
-- salvar os resultados;
-- gerar métricas, tabelas e gráficos depois.
-
+1. `python scripts\_calibrate_all.py`
+2. `python scripts\run_all.py`
+3. `python scripts\run_milp_noBE.py`
+4. `python run_multiseed.py`
+5. `python analyze_experiment.py`

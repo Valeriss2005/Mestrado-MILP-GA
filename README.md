@@ -29,7 +29,6 @@ O objetivo deste README é mostrar **como tudo se relaciona**, **qual pasta usar
 - [Quick Start](#quick-start)
 - [Estrutura do repositório](#estrutura-do-repositório)
 - [Como as pastas se relacionam](#como-as-pastas-se-relacionam)
-- [Por onde começar](#por-onde-começar)
 - [Correspondência entre instâncias e dissertação](#correspondência-entre-instâncias-e-dissertação)
 - [Fluxos de uso mais comuns](#fluxos-de-uso-mais-comuns)
 - [Reprodutibilidade](#reprodutibilidade)
@@ -64,16 +63,17 @@ Pasta dedicada à **execução dos modelos**, à **análise dos resultados** e �
 É o ponto central para quem deseja:
 - rodar o MILP;
 - rodar o GA;
-- usar as bases prontas;
-- reproduzir resultados;
+- executar o experimento formal da dissertação;
 - gerar métricas, tabelas, comparações e gráficos;
-- analisar as saídas experimentais da dissertação.
+- analisar as saídas experimentais do estudo.
+
+O fluxo operacional completo dessa etapa está descrito no `README.md` da própria pasta `otimiza-milp-ga`.
 
 ---
 
 ## Quick Start
 
-### Quero apenas rodar os experimentos com as bases já prontas
+### Quero reproduzir o experimento com as bases já prontas
 Vá direto para:
 
 ```bash
@@ -82,10 +82,7 @@ otimiza-milp-ga
 
 Esse é o melhor caminho para quem quer usar o projeto sem regenerar as bases.
 
-Nessa pasta, o fluxo recomendado é:
-
-1. executar os modelos;
-2. gerar as métricas e análises com os scripts específicos.
+Nessa pasta, a sequência correta de calibração, execução, complementação do MILP sem bem-estar, multiseed e análise final está descrita no `README.md` interno.
 
 ---
 
@@ -140,7 +137,11 @@ Mestrado-MILP-GA/
 │
 └── otimiza-milp-ga/
     ├── README.md
-    └── ...
+    ├── data/
+    │   ├── instances/
+    │   └── results/
+    ├── models/
+    └── scripts/
 ```
 
 ---
@@ -180,61 +181,7 @@ Depois, para executar os modelos, consolidar métricas e reproduzir os artefatos
 otimiza-milp-ga
 ```
 
-Essa pasta concentra a parte computacional e analítica do estudo.
-
----
-
-## Por onde começar
-
-### Caso 1 — Quero usar as bases já disponíveis
-Comece por:
-
-```bash
-otimiza-milp-ga
-```
-
-Você não precisa regenerar as instâncias antes.
-
----
-
-### Caso 2 — Quero entender como as bases foram construídas
-Comece por:
-
-```bash
-gera-instancia-I1-I3
-```
-
-Essa pasta documenta a geração de `SMALL_V15` e `LARGE_V31`.
-
----
-
-### Caso 3 — Quero gerar as instâncias maiores do experimento
-Siga esta ordem:
-
-```bash
-gera-instancia-I1-I3
-gera-instancias-I2-I4-I5
-```
-
-Primeiro entenda ou gere a base `LARGE_V31`; depois faça o escalonamento.
-
----
-
-### Caso 4 — Quero entender o pipeline completo da dissertação
-A sequência recomendada é:
-
-1. bases iniciais;
-2. escalonamento;
-3. otimização;
-4. análises, métricas e consolidação dos resultados.
-
-No repositório, isso corresponde a:
-
-```bash
-gera-instancia-I1-I3
-gera-instancias-I2-I4-I5
-otimiza-milp-ga
-```
+Essa pasta concentra a parte computacional e analítica do estudo. O fluxo formal de execução dessa etapa está documentado no README interno da própria pasta.
 
 ---
 
@@ -252,11 +199,10 @@ As instâncias geradas por escalonamento a partir da `LARGE_V31` ficam concentra
 ## Fluxos de uso mais comuns
 
 ### Fluxo A — Reproduzir os experimentos
-1. Use as bases já disponíveis no repositório.
+1. Use as bases já disponíveis no repositório ou gere novas instâncias.
 2. Vá para `otimiza-milp-ga`.
 3. Instale as dependências da pasta.
-4. Execute os scripts dos modelos.
-5. Gere as métricas, tabelas e análises com os scripts específicos da própria pasta.
+4. Siga a sequência operacional descrita no `README.md` da pasta de otimização.
 
 ---
 
