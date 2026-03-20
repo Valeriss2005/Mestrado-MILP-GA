@@ -177,24 +177,6 @@ Gera a análise consolidada a partir dos arquivos de métricas produzidos anteri
 
 ---
 
-## Quando recalibrar
-
-Você só precisa rodar novamente:
-
-```bash
-python scripts/_calibrate_all.py
-```
-
-quando:
-
-- gerar novas instâncias;
-- alterar as bases;
-- ou modificar a lógica que afeta os parâmetros calibrados do MILP.
-
-Se nada disso mudou, não é necessário recalibrar antes de cada execução.
-
----
-
 ## Onde os resultados são salvos
 
 Os principais arquivos de saída ficam em:
