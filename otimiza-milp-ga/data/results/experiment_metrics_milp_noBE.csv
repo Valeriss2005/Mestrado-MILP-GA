@@ -1,0 +1,6 @@
+instance,scenario,model,ativar_bem_estar,custo_total_folha,funcionarios_alocados,total_funcionarios,perc_funcionarios_alocados,total_alocacoes,projetos_ativos,total_projetos,upgrades,viol_distancia,viol_autoexclusao,viol_descompressao,tempo_execucao_s,status_solver
+I1_SMALL,D_MILP_noBE,MILP,False,25580082.6,209,220,95.0,560,60,60,0,307,0,0,5.65,Optimal
+I2_LARGE_05X,D_MILP_noBE,MILP,False,183331840.19,570,600,95.0,1075,160,160,70,0,0,0,64.92,Optimal
+I3_LARGE,D_MILP_noBE,MILP,False,374937018.79,1140,1200,95.0,2160,320,320,216,622,0,0,352.47,Optimal
+I4_LARGE_15X,D_MILP_noBE,MILP,False,572373416.2,1710,1800,95.0,3222,480,480,263,0,0,0,1401.67,Optimal
+I5_LARGE_25X,D_MILP_noBE,MILP,False,1196664200.32,2850,3000,95.0,5388,800,800,354,0,0,0,4384.49,Optimal

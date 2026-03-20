@@ -849,8 +849,8 @@ def main():
     )
     parser.add_argument(
         "--instances", nargs="*",
-        default=["LARGE_05X", "LARGE_15X", "LARGE_25X"],
-        help="Instâncias a gerar (default: todas)"
+        default=None,
+        help="Instâncias a gerar (default: perguntar ao usuário)"
     )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output", type=str, default="data/instances")
@@ -863,6 +863,24 @@ def main():
     print("  GERADOR DE INSTÂNCIAS v5 — Escalonamento Homotético da LARGE_V31")
     print("=" * 70)
 
+    # Perguntar ao usuário qual base quer gerar, se não informado via linha de comando
+    if args.instances is None or len(args.instances) == 0:
+        print("\nQual base quer gerar?")
+        opcoes = list(PROFILES.keys())
+        for idx, k in enumerate(opcoes, 1):
+            print(f"  {idx}. {k}: {PROFILES[k]['desc']}")
+        print(f"  {len(opcoes)+1}. TODAS: gerar todas as opções acima")
+        escolha = input("Digite o número da opção desejada (ou 'TODAS'): ").strip()
+        if escolha.upper() == "TODAS" or escolha == str(len(opcoes)+1):
+            instances = opcoes
+        elif escolha.isdigit() and 1 <= int(escolha) <= len(opcoes):
+            instances = [opcoes[int(escolha)-1]]
+        else:
+            print("Nenhuma instância válida selecionada. Encerrando.")
+            sys.exit(1)
+    else:
+        instances = args.instances
+
     if not os.path.exists(args.source):
         print(f"\nERRO: Arquivo fonte não encontrado: {args.source}")
         print("  Copie LARGE_V31.zip para data/instances/ antes de executar.")
@@ -873,7 +891,7 @@ def main():
     print("  TbCategorias, TbComposicao, TbTreinamentos carregadas")
 
     all_ok = True
-    for name in args.instances:
+    for name in instances:
         if name not in PROFILES:
             print(f"\nAVISO: '{name}' não reconhecida. Opções: {list(PROFILES.keys())}")
             continue
@@ -908,8 +926,12 @@ def main():
         else:
             print(f"    ✓ Todas as verificações passaram")
 
-        # Salvar
+        # Mensagem de aviso antes de gerar e salvar
         zip_path = os.path.join(args.output, f"{name}_V01.zip")
+        print("\n" + "="*60)
+        print(f"Gerando a instancia {os.path.basename(zip_path)} ...")
+        print("="*60)
+        input("Pressione Enter para gerar esta instância...")
         save_zip(tables, zip_path)
 
     print(f"\n{'='*70}")
